@@ -7,18 +7,21 @@ defmodule LvtwitterWeb.UserConfirmationInstructionsLive do
     ~H"""
     <.header>Resend confirmation instructions</.header>
 
+    <div class="form-wrapper">
     <.simple_form :let={f} for={:user} id="resend_confirmation_form" phx-submit="send_instructions">
       <.input field={{f, :email}} type="email" label="Email" required />
       <:actions>
-        <.button phx-disable-with="Sending...">Resend confirmation instructions</.button>
+        <.button class="btn btn-full" phx-disable-with="Sending...">Resend confirmation instructions</.button>
       </:actions>
     </.simple_form>
-
-    <p>
-      <.link href={~p"/users/register"}>Register</.link>
-      |
-      <.link href={~p"/users/log_in"}>Log in</.link>
-    </p>
+    </div>
+    <footer class="footer">
+      <p class="footer-links">
+        <.link href={~p"/users/register"}>Register</.link>
+        |
+        <.link href={~p"/users/log_in"}>Log in</.link>
+      </p>
+    </footer>
     """
   end
 
