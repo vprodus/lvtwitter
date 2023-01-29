@@ -20,7 +20,7 @@ defmodule LvtwitterWeb.Router do
   scope "/", LvtwitterWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    get "/", PageController, :home
+    live "/", TimelineLive, :home
   end
 
   # Other scopes may use custom stacks.
