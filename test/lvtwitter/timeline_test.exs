@@ -5,10 +5,17 @@ defmodule Lvtwitter.TimelineTest do
   alias Lvtwitter.Timeline.Post
 
 
-  describe "list_posts/0" do
-    test "list_posts/0 returns all posts" do
+  describe "list_posts/1" do
+    test "list_posts/0 returns list of posts" do
       post = insert(:post)
       assert Timeline.list_posts() == [post]
+    end
+
+    test "list_posts/1 accepts pagination" do
+      insert_list(3, :post)
+
+      assert [_post1, _post2] = Timeline.list_posts(page: 1, per_page: 2)
+      assert [_post3] = Timeline.list_posts(page: 2, per_page: 2)
     end
    end
 
@@ -51,6 +58,11 @@ defmodule Lvtwitter.TimelineTest do
       post = insert(:post)
       assert %Ecto.Changeset{} = Timeline.change_post(post)
     end
+  end
+
+  def insert_list(count, :post, attrs \\ %{}) do
+    Stream.repeatedly(fn -> insert(:post, attrs) end)
+    |> Enum.take(count)
   end
 
   def insert(:post, attrs \\ %{}) do
