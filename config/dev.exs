@@ -26,7 +26,8 @@ config :lvtwitter, LvtwitterWeb.Endpoint,
   secret_key_base: "UUfqbJZQ+HS8BK+a3QdOzfBpK2wVm0PynD+XUGWNpx2Zgm+I9CquERcTg0STzW5H",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]},
+    sass: {DartSass, :install_and_run, [:default, ~w(--watch)]}
   ]
 
 # ## SSL Support
