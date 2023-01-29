@@ -1,13 +1,19 @@
 defmodule Lvtwitter.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
+
+  alias Lvtwitter.Avatar
+
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "users" do
+    field :name, :string
+    field :username, :string
     field :email, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
+    field :avatar_url, :string
 
     timestamps()
   end
@@ -37,9 +43,19 @@ defmodule Lvtwitter.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:name, :username, :email, :password])
+    |> validate_required([:name])
+    |> validate_username()
     |> validate_email(opts)
     |> validate_password(opts)
+    |> generate_avatar_url()
+  end
+
+  defp validate_username(changeset) do
+    changeset
+    |> validate_required([:username])
+    |> unsafe_validate_unique(:username, Lvtwitter.Repo)
+    |> unique_constraint(:username)
   end
 
   defp validate_email(changeset, opts) do
@@ -80,6 +96,17 @@ defmodule Lvtwitter.Accounts.User do
       changeset
       |> unsafe_validate_unique(:email, Lvtwitter.Repo)
       |> unique_constraint(:email)
+    else
+      changeset
+    end
+  end
+
+  defp generate_avatar_url(changeset) do
+    if changeset.valid? do
+      email = get_change(changeset, :email)
+
+      changeset
+      |> put_change(:avatar_url, Avatar.generate(email))
     else
       changeset
     end

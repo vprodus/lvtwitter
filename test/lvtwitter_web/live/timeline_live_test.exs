@@ -11,4 +11,12 @@ defmodule LvtwitterWeb.TimelineLiveTest do
     assert html =~ "Home"
     assert render(view) =~ "Home"
   end
+
+  test "current user can see own avatar", %{conn: conn, user: user} do
+
+    {:ok, view, html} = live(conn, "/")
+
+    assert render(view) =~ user.avatar_url
+
+  end
 end

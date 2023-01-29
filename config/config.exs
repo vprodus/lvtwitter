@@ -21,6 +21,8 @@ config :lvtwitter, LvtwitterWeb.Endpoint,
   pubsub_server: Lvtwitter.PubSub,
   live_view: [signing_salt: "9LmgjLY0"]
 
+config :lvtwitter, :avatar_client, Lvtwitter.Avatar.Gravatar
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails
